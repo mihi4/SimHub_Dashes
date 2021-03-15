@@ -9,3 +9,15 @@ This is the repository for all my self made SimHub Dashes I'm using in my racing
 * **miACC**: Dash designed for the Vocore screens supported by SimHub. Tried to put as much information relevant during a race on one screen
 
 ![ACC Display](pics/miACCDisplay.png)
+
+On the left and right side are 10step spotter bars that show the distance to a car.
+
+![ACC_Spotter](pics/miACCDashSpotterinfo.png)
+
+The Detail screen shows more information
+![ACC_Details1](pics/miACCDashDetail1.png)
+
+- tyre and brake temps and pressures
+- track and weather infos
+- damage info
+- more detailed fuel info
