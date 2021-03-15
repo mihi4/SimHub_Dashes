@@ -14,7 +14,8 @@ On the left and right side are 10step spotter bars that show the distance to a c
 
 ![ACC_Spotter](pics/miACCDashSpotterinfo.png)
 
-The Detail screen shows more information
+The Detail screen shows more information about tyres, weather, track, fuel and damage.
+
 ![ACC_Details1](pics/miACCDashDetail1.png)
 
 - tyre and brake temps and pressures
