@@ -2,7 +2,7 @@
 
 This dash is designed to be used on a 4th monitor for information about a race, car and PC data.
 
-![Big Display](pics/miBigDisplay.png)
+![Big Display](pics/miBigDisplayInfo.png)
 
 The top part shows the map of the track on the left, the current standings on the right and the "pitstop-delta-time"(PDT) info in the middle.
 
