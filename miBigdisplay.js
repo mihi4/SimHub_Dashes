@@ -1,15 +1,51 @@
 function miGetPitstopDeltatime() {
   switch($prop('TrackName')) {
-    case 'Suzuka':
-      return 5;
+	case 'Mount Panorama Circuit':
+      return 41;
+	case 'WeatherTech Raceway Laguna Seca':
+      return 42;
+	case 'Circuit de Spa-Francorchamps':
+      return 43;
+	case 'Suzuka Circuit':
+      return 44;
+	case 'Kyalami Grand Prix Circuit':
+      return 45;
+	case 'Oulton Park':
+      return 46;
+	case 'Snetterton Circuit':
+      return 47;
+	case 'Donington Park':
+      return 48;
+	case 'Monza Circuit':
+      return 49;
+	case 'Brands Hatch Circuit':
+      return 50;
+	case 'Silverstone':
+      return 51;
+	case 'Circuit Paul Ricard':
+      return 52;
+	case 'Misano World Circuit':
+      return 53;
+	case 'Circuit Zandvoort':
+      return 54;
+	case 'Nürburgring':
+      return 55;
+	case 'Hungaroring':
+      return 56;  
+    case 'Circuit de Barcelona-Catalunya':
+      return 57;
+	case 'Circuit Zolder':
+      return 58;
+	case 'Autodromo Enzo e Dino Ferrari':
+      return 59;
     default:
-      return 8;
+      return 60;
   }
 }
 
-function miGetPitstopRenderingSkip() { return 20; }
-
 function miGetPitstopDeltaMaxGapTime() { return 2; } // ignore cars with gap +/- to pit window bigger than this
+
+function miGetPitstopRenderingSkip() { return 20; }
 
 function miGetPitstopDeltaFrameX() { return 10; }
 function miGetPitstopDeltaFrameY() { return 10; }
