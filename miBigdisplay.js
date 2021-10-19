@@ -1,41 +1,41 @@
     function miGetPitstopDeltatime() {
-      switch($prop('TrackName')) {
+      switch($prop('TrackName')) {  // regular pitstop first, 1L refuel and DT in comment
       case 'Mount Panorama Circuit':
-          return 41;
+          return 57; //57  27  19
       case 'WeatherTech Raceway Laguna Seca':
-          return 42;
+          return 59; //59  29  21
       case 'Circuit de Spa-Francorchamps':
-          return 43;
+          return 95; //95  65  57
       case 'Suzuka Circuit':
-          return 44;
+          return 65; //65  35  27
       case 'Kyalami Grand Prix Circuit':
-          return 45;
+          return 56; //56  26  18
       case 'Oulton Park':
-          return 46;
+          return 46; //
       case 'Snetterton Circuit':
-          return 47;
+          return 47; //
       case 'Donington Park':
-          return 48;
+          return 48; //
       case 'Monza Circuit':
-          return 49;
+          return 69; //69  39  31
       case 'Brands Hatch Circuit':
-          return 50;
+          return 57; //57  27  19
       case 'Silverstone':
-          return 51;
+          return 61; //61  31  23
       case 'Circuit Paul Ricard':
-          return 52;
+          return 65; //65  35  27
       case 'Misano World Circuit':
-          return 53;
+          return 66; //66  36  28
       case 'Circuit Zandvoort':
-          return 54;
+          return 57; //57  27  19
       case 'Nürburgring':
-          return 55;
+          return 63; //63  33  25
       case 'Hungaroring':
-          return 56;  
+          return 62; //62  32  24
         case 'Circuit de Barcelona-Catalunya':
-          return 57;
+          return 68; //68  38  20
       case 'Circuit Zolder':
-          return 58;
+          return 68; //68  38  30
       case 'Autodromo Enzo e Dino Ferrari':
           return 59;
         default:
