@@ -42,6 +42,82 @@
           return 60;
       }
     }
+    
+
+function miGetSteeringangle() {
+  var angle=0;
+
+  if ($prop('DataCorePlugin.CurrentGame') == 'F12019') {
+    angle = $prop('GameRawData.PlayerCarTelemetryData.m_steer')*180;
+    return angle; 
+  }
+
+  if ($prop('DataCorePlugin.CurrentGame') == 'CodemastersDirtRally2') {
+    angle = $prop('GameRawData.Steer')*360; return angle; 
+  }
+
+  if ($prop('DataCorePlugin.CurrentGame') == 'AssettoCorsaCompetizione') {
+     
+    if (($prop('CarId') == "")) { return 0; }
+
+    if ($prop('CarId').indexOf("ferrari")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*240; return angle; }
+    if ($prop('CarId').indexOf("porsche")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*400; return angle; }
+    if ($prop('CarId').indexOf("mclaren")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*240; return angle; }
+    
+    if ($prop('CarId').indexOf("amr")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*320; return angle; }
+    if ($prop('CarId').indexOf("audi")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*360; }
+    if ($prop('CarId').indexOf("bentley")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*320; return angle; }    
+    if ($prop('CarId').indexOf("bmw_m6")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*283; return angle; }
+    if ($prop('CarId').indexOf("jaguar")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*360; return angle; }  
+    if ($prop('CarId').indexOf("honda")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*310; return angle; }
+    if ($prop('CarId').indexOf("gallardo")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*360; return angle; }  
+    if ($prop('CarId').indexOf("lamborghini")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*310; return angle; }    
+    if ($prop('CarId').indexOf("lexus")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*320; return angle; }    
+    if ($prop('CarId').indexOf("mercedes_amg_gt3")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*320; return angle; }
+    if ($prop('CarId').indexOf("nissan")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*320; return angle; }
+    
+    // GT4s
+    if ($prop('CarId').indexOf("alpine")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*360; return angle; }
+    if ($prop('CarId').indexOf("bmw_m4")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*246; return angle; }
+    if ($prop('CarId').indexOf("chevrolet")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*310; return angle; }
+    if ($prop('CarId').indexOf("ginetta")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*360; return angle; }
+    if ($prop('CarId').indexOf("ktm")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*290; return angle; }
+    if ($prop('CarId').indexOf("maserati")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*450; return angle; }
+    if ($prop('CarId').indexOf("mercedes_amg_gt4")+1) { angle = $prop('GameRawData.Physics.SteerAngle')*246; return angle; }
+    
+  }
+  
+  return angle;
+    
+}
+
+function miGetFuelsafelaps() {
+  return 2;
+}
+
+function miGetFuelcalc(index) {
+  
+  var times = [90, 60, 25];  // change this values to your preferred race times in minutes
+  var safeLaps = miGetFuelsafelaps();  // additional laps to calculate safe fuel amount
+  
+  var ret = "xx";
+  var fuelPerLap = $prop('DataCorePlugin.Computed.Fuel_LitersPerLap');
+  var sessionBest = $prop('BestLapTime');
+  var duration = times[index];
+  
+  ret = duration + "'" + ": ";
+ 
+  if (timespantoseconds(sessionBest)<=0 ) { ret+="---L"; return ret }
+  
+  var safeFuel = Math.round( (duration/(timespantoseconds(sessionBest)/60) + safeLaps) * fuelPerLap);
+ 
+  ret+=safeFuel + "L";
+  
+  
+
+  return ret;
+}
+
 
 function miGetPitstopDeltaMaxGapTime() { return 2; } // ignore cars with gap +/- to pit window bigger than this
 
