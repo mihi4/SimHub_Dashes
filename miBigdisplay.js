@@ -6,16 +6,16 @@
           return 59; //59  29  21
       case 'Circuit de Spa-Francorchamps':
           return 95; //95  65  57
-      case 'Suzuka Circuit':
+      case 'Suzuka':
           return 65; //65  35  27
       case 'Kyalami Grand Prix Circuit':
           return 56; //56  26  18
       case 'Oulton Park':
-          return 46; //
+          return 46; //  FIXXXME not correct
       case 'Snetterton Circuit':
-          return 47; //
+          return 47; //  FIXXXME not correct
       case 'Donington Park':
-          return 48; //
+          return 48; //  FIXXXME not correct
       case 'Monza Circuit':
           return 69; //69  39  31
       case 'Brands Hatch Circuit':
@@ -44,6 +44,16 @@
     }
     
 
+function miCheckACC() {
+  if ($prop('DataCorePlugin.CurrentGame') == 'AssettoCorsaCompetizione') {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+
+
 function miGetSteeringangle() {
   var angle=0;
 
@@ -56,7 +66,7 @@ function miGetSteeringangle() {
     angle = $prop('GameRawData.Steer')*360; return angle; 
   }
 
-  if ($prop('DataCorePlugin.CurrentGame') == 'AssettoCorsaCompetizione') {
+  if (miCheckACC()) {
      
     if (($prop('CarId') == "")) { return 0; }
 
@@ -91,13 +101,18 @@ function miGetSteeringangle() {
     
 }
 
+
+
 function miGetFuelsafelaps() {
   return 2;
 }
 
 function miGetFuelcalc(index) {
   
-  var times = [90, 60, 25];  // change this values to your preferred race times in minutes
+  var times = [90, 60, 45, 25, 12, 10];  // change this values to your preferred race times in minutes
+  //return times.length;
+  if (index >= times.length) { return "---"; }
+    
   var safeLaps = miGetFuelsafelaps();  // additional laps to calculate safe fuel amount
   
   var ret = "xx";
@@ -112,16 +127,55 @@ function miGetFuelcalc(index) {
   var safeFuel = Math.round( (duration/(timespantoseconds(sessionBest)/60) + safeLaps) * fuelPerLap);
  
   ret+=safeFuel + "L";
-  
-  
 
   return ret;
 }
 
+function miGetWeatherForecast() {
+  if (miCheckACC()) {    
+    switch($prop('GameRawData.Graphics.rainIntensity')) {
+      case 'ACC_DRIZZLE':
+        return 'rain_drizzle';
+      case 'ACC_LIGHT_RAIN':
+        return 'rain_light';
+      case 'ACC_MEDIUM_RAIN':
+        return 'rain_medium';
+      case 'ACC_HEAVY_RAIN':
+        return 'rain_heavy';
+      case 'ACC_THUNDERSTORM':
+        return 'rain_storm';
+      default:
+        return 'rain_none';
+    }
+    
+  }
+
+  
+}
+
+
+function miGetLeaderboardposition(repeatindex) {
+  var max = 48;  // maximum lines on Leaderboard
+  var factor = 1/2;
+  var position;
+  var indexAdd = 0;
+
+  if($prop('Position') > max*factor) indexAdd = Math.round($prop('Position')-max*factor);
+
+  indexAdd = Math.min(indexAdd,($prop('OpponentsCount')-max));
+  indexAdd = Math.max(indexAdd,1);
+
+  position = repeatindex + indexAdd;
+  
+  return position;
+}
 
 function miGetPitstopDeltaMaxGapTime() { return 2; } // ignore cars with gap +/- to pit window bigger than this
 
 function miGetPitstopRenderingSkip() { return 20; }
+
+
+/*
 
 function miGetPitstopDeltaFrameX() { return 10; }
 function miGetPitstopDeltaFrameY() { return 10; }
@@ -164,96 +218,113 @@ function miGetPitstopCarYPos(offset) {
   
   return xpos;
 }
+*/
 
 function miGetPitstopDeltaGap(i) {
     
-  //var i = repeatindex();
-    
   var pitStopTime = miGetPitstopDeltatime();
-  
-  
   var gapToRejoin;
-    
-  var carGap;
-  carGap = drivergaptoplayer(i); // if the car is behind us, the gap is already correct
+  var carGap = drivergaptoplayer(i); // if the car is behind us, the gap is already correct
+  
   if (!isplayer(i) && carGap!=null) {
     if (carGap <= 0) {  // when in front, calculate the gap from behind
       var lastLapSeconds = timespantoseconds(driverlastlap(i));
       var lapGap = drivercurrentlap(i) - $prop('CurrentLap'); // FIXXXME use later!				
       carGap = lastLapSeconds - Math.abs(carGap);  // use last Lap of driver as total time and subtract the distance to the player
     } 
-    if (carGap > pitStopTime) { 
+    
+    /*if (carGap > pitStopTime) { 
       gapToRejoin = carGap - pitStopTime; 
     } else {
       gapToRejoin = carGap;
-    }      
+    } */     
     
   }   
     
   return carGap;
 }
 
+
+function miGetPDTColor(position) {
+  var retval = 'transparent';
+
+  if ($prop('CurrentLap')>1) { 
+    var maxGapTime = miGetPitstopDeltaMaxGapTime();
+    var pitStopTime = miGetPitstopDeltatime();
+    var gap = miGetPitstopDeltaGap(position);
+    
+    if ((gap < pitStopTime+maxGapTime) && (gap > pitStopTime-maxGapTime) ) { retval = 'lightblue';}
+    if ((gap < pitStopTime+1) && (gap > pitStopTime-1) ) { retval = 'darkred'}
+  }
+
+  return retval;
+}
+
 function miGetTyrepressureColor(pressure) {
-  var tyreRain = $prop('GameRawData.Graphics.RainTyres');
-  var tyreDryName = $prop('GameRawData.StaticInfo.dryTyresName');
-  var tyreCompound = $prop('GameRawData.Graphics.TyreCompound');
-  
   var cold = '#FF6495ED';
   var optimum = '#FF00FF7F';
   var hot = '#FFFFA500';
   
-  var retval = hot;
-  
-  if (tyreRain) {    
-    if (pressure <= 31.0) {
-      if (pressure >= 29.5) {
-        retval = optimum;
-      } else {
-        retval = cold;
+  var retval = '#FFFFFFFF';
+    
+  if (miCheckACC()) {
+    retval = hot;
+    
+    var tyreRain = $prop('GameRawData.Graphics.RainTyres');
+    var tyreDryName = $prop('GameRawData.StaticInfo.dryTyresName');
+    var tyreCompound = $prop('GameRawData.Graphics.TyreCompound');
+    
+    if (tyreRain) {    
+      if (pressure <= 31.0) {
+        if (pressure >= 29.5) {
+          retval = optimum;
+        } else {
+          retval = cold;
+        }
       }
+      return retval;
+    } 
+    
+    if (tyreDryName == 'DHD2') {  // slightly different values for 2020 and 2019
+      if (pressure <= 28.0) {
+        if (pressure >= 27.5) {
+          retval = optimum;
+        } else {
+          retval = cold;
+        }
+      }
+      return retval;
     }
-    return retval;
-  } 
-  
-  if (tyreDryName == 'DHD2') {  // slightly different values for 2020 and 2019
+    
+    if (tyreDryName == 'DHE') {  // slightly different values for 2020 and 2019
+      if (pressure <= 27.8) {
+        if (pressure >= 27.3) {
+          retval = optimum;
+        } else {
+          retval = cold;
+        }
+      }
+      return retval;
+    }
+    
+    if (tyreDryName == 'DHA') {  // GT4
+      if (pressure <= 27.5) {
+        if (pressure >= 26.5) {
+          retval = optimum;
+        } else {
+          retval = cold;
+        }
+      }
+      return retval;
+    }
+    
+    // use as default, if none of above is given
     if (pressure <= 28.0) {
-      if (pressure >= 27.5) {
-        retval = optimum;
-      } else {
-        retval = cold;
-      }
-    }
-    return retval;
-  }
-  
-  if (tyreDryName == 'DHE') {  // slightly different values for 2020 and 2019
-    if (pressure <= 27.8) {
       if (pressure >= 27.3) {
         retval = optimum;
       } else {
         retval = cold;
       }
-    }
-    return retval;
-  }
-  
-  if (tyreDryName == 'DHA') {  // GT4
-    if (pressure <= 27.5) {
-      if (pressure >= 26.5) {
-        retval = optimum;
-      } else {
-        retval = cold;
-      }
-    }
-    return retval;
-  }
-  
-  // use as default, if none of above is given
-  if (pressure <= 28.0) {
-    if (pressure >= 27.3) {
-      retval = optimum;
-    } else {
-      retval = cold;
     }
   }
   return retval;
