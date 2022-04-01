@@ -28,8 +28,3 @@ The Detail screen shows more information about tyres, weather, track, fuel and d
 To install a dash in SimHub, just download the .simhubdash file and doubleclick it. It should automatically be installed in the SimHub dash-repository.
 
 For both dashes also the file "miBigDisplay.js" is needed. Download and copy it to the "JavascriptExtension" folder of your SimHub installation - that's it.
-
-# Donations
-
-If you enjoy one of my dashes and want to give something back to the world, I encourage you to help the Pitt-Hopkins-Research-Foundation with a small donation:
-https://www.paypal.com/fundraiser/charity/73878
