@@ -132,7 +132,7 @@ function miGetFuelcalc(index) {
 }
 
 function miGetWeatherForecast() {
-  let images=['rain_none', 'rain_drizzle', 'rain_light', 'rain_medium', 'rain_heavy', 'rain_storm']
+  let images=['rain_none', 'rain_drizzle', 'rain_light', 'rain_medium', 'rain_heavy', 'rain_storm'];
   if (miCheckACC()) {    
     return images[$prop('GameRawData.Graphics.rainIntensity')];
   } 
