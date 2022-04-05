@@ -132,25 +132,10 @@ function miGetFuelcalc(index) {
 }
 
 function miGetWeatherForecast() {
+  let images=['rain_none', 'rain_drizzle', 'rain_light', 'rain_medium', 'rain_heavy', 'rain_storm']
   if (miCheckACC()) {    
-    switch($prop('GameRawData.Graphics.rainIntensity')) {
-      case 'ACC_DRIZZLE':
-        return 'rain_drizzle';
-      case 'ACC_LIGHT_RAIN':
-        return 'rain_light';
-      case 'ACC_MEDIUM_RAIN':
-        return 'rain_medium';
-      case 'ACC_HEAVY_RAIN':
-        return 'rain_heavy';
-      case 'ACC_THUNDERSTORM':
-        return 'rain_storm';
-      default:
-        return 'rain_none';
-    }
-    
-  }
-
-  
+    return images[$prop('GameRawData.Graphics.rainIntensity')];
+  } 
 }
 
 
