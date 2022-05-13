@@ -23,6 +23,10 @@ The Detail screen shows more information about tyres, weather, track, fuel and d
 - damage info
 - more detailed fuel info
 
+* **miStratDisplay**: Evolution of the miBigDisplay, showing more data relevant during a race.
+
+![Strat Display](pics/miStratDisplay.png)
+
 # Installation
 
 To install a dash in SimHub, just download the .simhubdash file and doubleclick it. It should automatically be installed in the SimHub dash-repository.
