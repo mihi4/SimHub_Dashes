@@ -42,7 +42,20 @@
           return 60;
       }
     }
-    
+
+function miGetSPlashAndDashDeltatime() {
+	var standingTime = 3; // regular time in pits for just 1L of fuel
+	var regularTime = 30; // regular time in pits for standard pitStopTime
+	var regularPitStopDelta = miGetPitstopDeltatime();
+	
+	// calculate the difference between the standing times
+	var timeDelta = regularTime - standingTime;
+	
+	// now substract the new timeDelta
+	var retVal = regularPitStopDelta - timeDelta;
+	
+	return retVal;	
+}
 
 function miCheckACC() {
   if ($prop('DataCorePlugin.CurrentGame') == 'AssettoCorsaCompetizione') {
@@ -160,54 +173,9 @@ function miGetPitstopDeltaMaxGapTime() { return 2; } // ignore cars with gap +/-
 function miGetPitstopRenderingSkip() { return 20; }
 
 
-/*
-
-function miGetPitstopDeltaFrameX() { return 10; }
-function miGetPitstopDeltaFrameY() { return 10; }
-function miGetPitstopDeltaFrameHeight() { return 800; }
-function miGetPitstopDeltaFrameWidth() { return 200; }
-
-function miGetPitstopDeltaWindowX() { return miGetPitstopDeltaFrameX() + 20; }
-
-function miGetPitstopDeltaWindowY() { 
-  var ypos = 0;
-  ypos = miGetPitstopDeltaFrameY() + (miGetPitstopDeltaFrameHeight()-miGetPitstopDeltaWindowHeight())/2;
-  return ypos;  + 20; 
-}
-
-function miGetPitstopDeltaWindowHeight() { return miGetPitstopDeltaCarHeight(); }  // make sure, car and pitstopwindow are same height
-
-function miGetPitstopDeltaWindowWidth()  { return 15;  }
-
-function miGetPitstopDeltaAddonHeight() { 
-  var delta = miGetPitstopDeltatime();
-  var deltaHeight = miGetPitstopDeltaWindowHeight();
-  var deltaAdd = miGetPitstopDeltaAdditionalTime();
-
-  var height = deltaHeight/delta*deltaAdd;
-  return height;
-}
-
-function miGetPitstopDeltaCarHeight()  { return 50;  }
-function miGetPitstopDeltaCarWidth()  { return miGetPitstopDeltaCarHeight()*0.55;  }  // keep aspect ratio
-
-
-function miGetPitstopCarXPos(offset) {
-  var xpos = miGetPitstopDeltaWindowX() + miGetPitstopDeltaWindowWidth() + 5;
-  
-  return xpos;
-}
-
-function miGetPitstopCarYPos(offset) {
-  var xpos = 20 + ($prop('Position')*10);
-  
-  return xpos;
-}
-*/
-
 function miGetPitstopDeltaGap(i) {
     
-  var pitStopTime = miGetPitstopDeltatime();
+  // not needed? var pitStopTime = miGetPitstopDeltatime();
   var gapToRejoin;
   var carGap = drivergaptoplayer(i); // if the car is behind us, the gap is already correct
   
@@ -236,10 +204,15 @@ function miGetPDTColor(position) {
   if ($prop('CurrentLap')>1) { 
     var maxGapTime = miGetPitstopDeltaMaxGapTime();
     var pitStopTime = miGetPitstopDeltatime();
+	var splashDashTime = miGetSPlashAndDashDeltatime();
+	
     var gap = miGetPitstopDeltaGap(position);
     
     if ((gap < pitStopTime+maxGapTime) && (gap > pitStopTime-maxGapTime) ) { retval = 'lightblue';}
     if ((gap < pitStopTime+1) && (gap > pitStopTime-1) ) { retval = 'darkred'}
+	if ((gap < splashDashTime+maxGapTime) && (gap > splashDashTime-maxGapTime) ) { retval = 'lightyellow';}
+	if ((gap < splashDashTime+1) && (gap > splashDashTime-1) ) { retval = 'darkgreen'}
+	
   }
 
   return retval;
