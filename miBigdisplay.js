@@ -38,6 +38,8 @@
           return 68; //68  38  30
       case 'Autodromo Enzo e Dino Ferrari':
           return 59;
+	  case 'Indianapolis Motor Speedway':
+          return 74;
         default:
           return 60;
       }
