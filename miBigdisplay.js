@@ -40,6 +40,8 @@
           return 59;
 	  case 'Indianapolis Motor Speedway':
           return 74;
+	  case 'Watkins Glen International':
+          return 80;	  
         default:
           return 60;
       }
