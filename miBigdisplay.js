@@ -248,8 +248,8 @@ function miGetTyrepressureColor(pressure) {
     } 
     
     if (tyreDryName == 'DHD2') {  // slightly different values for 2020 and 2019
-      if (pressure <= 28.0) {
-        if (pressure >= 27.5) {
+      if (pressure <= 26.8) {
+        if (pressure >= 26.4) {
           retval = optimum;
         } else {
           retval = cold;
@@ -259,8 +259,8 @@ function miGetTyrepressureColor(pressure) {
     }
     
     if (tyreDryName == 'DHE') {  // slightly different values for 2020 and 2019
-      if (pressure <= 27.8) {
-        if (pressure >= 27.3) {
+      if (pressure <= 26.8) {
+        if (pressure >= 26.4) {
           retval = optimum;
         } else {
           retval = cold;
@@ -270,8 +270,8 @@ function miGetTyrepressureColor(pressure) {
     }
     
     if (tyreDryName == 'DHA') {  // GT4
-      if (pressure <= 27.5) {
-        if (pressure >= 26.5) {
+      if (pressure <= 27.) {
+        if (pressure >= 26.0) {
           retval = optimum;
         } else {
           retval = cold;
@@ -281,8 +281,8 @@ function miGetTyrepressureColor(pressure) {
     }
     
     // use as default, if none of above is given
-    if (pressure <= 28.0) {
-      if (pressure >= 27.3) {
+    if (pressure <= 27.0) {
+      if (pressure >= 26.0) {
         retval = optimum;
       } else {
         retval = cold;
